@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container flex flex-col justify-center px-16">
+        <h1 class="mb-4 text-2xl">Churn Prediction</h1>
+        
+        <form action="" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 w-full max-w-md">
+            {% csrf_token %}
+
+            <div class="input-field flex item-center gap-4">
+                <label for="select_model">Select Model</label>
+                <select name="select_model" id="select_model" class="border border-black">
+                    <option value="logistic_regression">Logistic Regression</option>
+                    <option value="decision_tree">Decision Tree</option>
+                    <option value="random_forest">Random Forest</option>
+                    <option value="adaboost">ADA Boost</option>
+                    <option value="xgboost">XGBoost</option>
+                    <option value="catboost">CatBoost</option>
+                    <option value="linear_svm">Linear SVM</option>
+                    <option value="naive_bayes">Naive Bayes</option>
+                </select>
+            </div>
+
+            <div class="input-field flex item-center gap-4">
+                <label for="">TV Subscriber</label>
+                <input type="radio" name="tv_subscriber" id="tv_subscriber_yes" value="1">
+                <label for="tv_subscriber_yes">Yes</label>
+                <input type="radio" name="tv_subscriber" id="tv_subscriber_no" value="0">
+                <label for="tv_subscriber_no">No</label>
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="">Movie Package Subscriber</label>
+                <input type="radio" name="movie_subscriber" id="movie_subscriber_yes" value="1">
+                <label for="movie_subscriber_yes">Yes</label>
+                <input type="radio" name="movie_subscriber" id="movie_subscriber_no" value="0">
+                <label for="movie_subscriber_no">No</label>
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="subscription_age">Subscription Age</label>
+                <input type="text" id="subscription_age" name="subscription_age" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="bill_avg">Bill Average</label>
+                <input type="text" id="bill_avg" name="bill_avg" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="remaining_contract">Remaining Contract</label>
+                <input type="text" id="remaining_contract" name="remaining_contract" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="service_failure_count">Service Failure Count</label>
+                <input type="text" id="service_failure_count" name="service_failure_count" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="download_avg">Download Average</label>
+                <input type="text" id="download_avg" name="download_avg" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="upload_avg">Upload Average</label>
+                <input type="text" id="upload_avg" name="upload_avg" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="download_over_limit">Download Over Limit</label>
+                <input type="text" id="download_over_limit" name="download_over_limit" required class="border border-black">
+            </div>
+            <div class="input-field flex item-center gap-4">
+                <label for="contract">Still on Contract</label>
+                <input type="radio" name="contract" id="contract_yes" value="1">
+                <label for="contract_yes">Yes</label>
+                <input type="radio" name="contract" id="contract_no" value="0">
+                <label for="contract_no">No</label>
+            </div>
+
+            <input type="submit" name="submit" id="submit" value="Submit" class="border border-black bg-blue-500 text-white px-4 py-2 cursor-pointer">
+        </form>
+
+        {% if result %}
+            <div class="mt-4 p-4 border border-black bg-gray-100">
+                <h2 class="text-lg font-bold">Prediction Result using {{ selected_model }}</h2>
+                <p>{{ result }}</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
