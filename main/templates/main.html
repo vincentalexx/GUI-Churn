@@ -9,15 +9,16 @@
 
             <div class="input-field flex item-center gap-4">
                 <label for="select_model">Select Model</label>
-                <select name="select_model" id="select_model" class="border border-black">
-                    <option value="logistic_regression">Logistic Regression</option>
-                    <option value="decision_tree">Decision Tree</option>
-                    <option value="random_forest">Random Forest</option>
-                    <option value="adaboost">ADA Boost</option>
-                    <option value="xgboost">XGBoost</option>
-                    <option value="catboost">CatBoost</option>
-                    <option value="linear_svm">Linear SVM</option>
-                    <option value="naive_bayes">Naive Bayes</option>
+                <select name="select_model" id="select_model" class="border border-black" required>
+                    <option value="" disabled {% if not selected_model %} selected {% endif %}>-- Select Model --</option>
+                    <option value="logistic_regression" {% if selected_model == "Logistic Regression" %} selected {% endif %}>Logistic Regression</option>
+                    <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
+                    <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
+                    <option value="adaboost" {% if selected_model == "ADA Boost" %} selected {% endif %}>ADA Boost</option>
+                    <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
+                    <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
+                    <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
+                    <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
                 </select>
             </div>
 
@@ -37,31 +38,31 @@
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="subscription_age">Subscription Age</label>
-                <input type="text" id="subscription_age" name="subscription_age" required class="border border-black">
+                <input type="text" id="subscription_age" name="subscription_age"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="bill_avg">Bill Average</label>
-                <input type="text" id="bill_avg" name="bill_avg" required class="border border-black">
+                <input type="text" id="bill_avg" name="bill_avg"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="remaining_contract">Remaining Contract</label>
-                <input type="text" id="remaining_contract" name="remaining_contract" required class="border border-black">
+                <input type="text" id="remaining_contract" name="remaining_contract"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="service_failure_count">Service Failure Count</label>
-                <input type="text" id="service_failure_count" name="service_failure_count" required class="border border-black">
+                <input type="text" id="service_failure_count" name="service_failure_count"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="download_avg">Download Average</label>
-                <input type="text" id="download_avg" name="download_avg" required class="border border-black">
+                <input type="text" id="download_avg" name="download_avg"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="upload_avg">Upload Average</label>
-                <input type="text" id="upload_avg" name="upload_avg" required class="border border-black">
+                <input type="text" id="upload_avg" name="upload_avg"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="download_over_limit">Download Over Limit</label>
-                <input type="text" id="download_over_limit" name="download_over_limit" required class="border border-black">
+                <input type="text" id="download_over_limit" name="download_over_limit"  class="border border-black">
             </div>
             <div class="input-field flex item-center gap-4">
                 <label for="contract">Still on Contract</label>
