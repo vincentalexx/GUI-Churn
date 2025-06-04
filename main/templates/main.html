@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container {% if not result %}d-flex align-items-center justify-content-center min-vh-100{% else %}py-5{% endif %}">
+<div class="container {% if not result %}d-flex align-items-center justify-content-center min-vh-100{% endif %}">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="row g-4 g-md-5">
-                <div class="text-center mb-4">
+                <div class="text-center">
                     <h4 class="card-title">Customer Churn Prediction</h4>
-                    <p class="text-muted">Enter customer details to predict churn probability</p>
+                    <p class="text-muted mb-0">Enter customer details to predict churn probability</p>
                 </div>                
 
                 <!-- Form Input -->
@@ -114,17 +114,27 @@
                         <div class="card-body">
 
                             <h5 class="card-title mb-4"><i class="bi bi-graph-up-arrow me-2"></i>Prediction Result</h5>
-                            <div class="text-center mb-3">
-                                <h2 class="text-success fw-bold">{{ result.probability }}%</h2>
-                                <span class="badge bg-warning text-dark">
-                                    <i class="bi bi-exclamation-triangle me-1"></i>{{ result.risk_level }}
-                                </span>
-                            </div>
+                            
+                            {% if predict == 'Churn' %}
+                                <div class="text-center mb-3">
+                                    <h2 class="text-danger fw-bold">{{ probability }}%</h2>
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>{{ result }}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div class="text-center mb-3">
+                                    <h2 class="text-success fw-bold">{{ probability }}%</h2>
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle me-1"></i>{{ result }}
+                                    </span>
+                                </div>
+                            {% endif %}
 
                             <div class="mb-3">
                                 <h6>Summary</h6>
                                 <p class="text-muted">
-                                    This customer has a <strong>{{ result.probability }}%</strong> probability of churning.
+                                    This customer has a <strong>{{ probability }}%</strong> probability of churning.
                                     {{ result.summary }}
                                 </p>
                             </div>

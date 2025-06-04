@@ -42,55 +42,67 @@ def main(request):
             input_scaled = scaler.transform(data)
             predict = logistic_regression_model.predict(input_scaled)
             selected_model = 'Logistic Regression'
+            probability = logistic_regression_model.predict_proba(input_scaled)[0][1]
 
         elif selected_model == 'decision_tree':
             scaler = dt_scaler
             input_scaled = scaler.transform(data)
             predict = decision_tree_model.predict(input_scaled)
             selected_model = 'Decision Tree'
+            probability = decision_tree_model.predict_proba(input_scaled)[0][1]
 
         elif selected_model == 'random_forest':
             scaler = rf_scaler
             input_scaled = scaler.transform(data)
             predict = random_forest_model.predict(input_scaled)
             selected_model = 'Random Forest'
+            probability = random_forest_model.predict_proba(input_scaled)[0][1]
 
         elif selected_model == 'adaboost':
             scaler = ada_scaler
             input_scaled = scaler.transform(data)
             predict = adaboost_model.predict(input_scaled)
             selected_model = 'AdaBoost'
+            probability = adaboost_model.predict_proba(input_scaled)[0][1]
 
         elif selected_model == 'xgboost':
             scaler = xg_scaler
             input_scaled = scaler.transform(data)
             predict = xgboost_model.predict(input_scaled)
             selected_model = 'XGBoost'
+            probability = xgboost_model.predict_proba(input_scaled)[0][1]
 
         elif selected_model == 'catboost':
             # scaler = cat_scaler
             # input_scaled = scaler.transform(data)
             predict = catboost_model.predict(data)
             selected_model = 'CatBoost'
+            probability = catboost_model.predict_proba(data)[0][1]
 
         elif selected_model == 'linear_svm':
             scaler = svm_scaler
             input_scaled = scaler.transform(data)
             predict = linear_svm_model.predict(input_scaled)
             selected_model = 'Linear SVM'
-            
+            probability = linear_svm_model.predict_proba(input_scaled)[0][1]
+
         elif selected_model == 'naive_bayes':
             scaler = nb_scaler
             input_scaled = scaler.transform(data)
             predict = naive_bayes_model.predict(input_scaled)
             selected_model = 'Naive Bayes'
+            probability = naive_bayes_model.predict_proba(input_scaled)[0][1]
 
         if predict == 1:
-            predict = "Customer will churn"
+            predict = "Churn"
+            result = "High Churn Risk."
         else:
-            predict = "Customer will not churn"
+            predict = "Not Churn"
+            result = "Low Churn Risk."
 
-        return render(request, 'main.html', {'result' : predict, 'selected_model': selected_model})
-    
+        probability = round(probability * 100, 2)
+
+        return render(request, 'main.html', {'result' : result, 'predict': predict, 'selected_model': selected_model, 'probability' : probability})
+
     else:
         return render(request, 'main.html')
