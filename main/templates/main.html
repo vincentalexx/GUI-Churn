@@ -1,85 +1,149 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container flex flex-col justify-center px-16">
-        <h1 class="mb-4 text-2xl">Churn Prediction</h1>
-        
-        <form action="" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 w-full max-w-md">
-            {% csrf_token %}
+<div class="container {% if not result %}d-flex align-items-center justify-content-center min-vh-100{% else %}py-5{% endif %}">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="row g-4 g-md-5">
+                <div class="text-center mb-4">
+                    <h4 class="card-title">Customer Churn Prediction</h4>
+                    <p class="text-muted">Enter customer details to predict churn probability</p>
+                </div>                
 
-            <div class="input-field flex item-center gap-4">
-                <label for="select_model">Select Model</label>
-                <select name="select_model" id="select_model" class="border border-black" required>
-                    <option value="" disabled {% if not selected_model %} selected {% endif %}>-- Select Model --</option>
-                    <option value="logistic_regression" {% if selected_model == "Logistic Regression" %} selected {% endif %}>Logistic Regression</option>
-                    <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
-                    <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
-                    <option value="adaboost" {% if selected_model == "ADA Boost" %} selected {% endif %}>ADA Boost</option>
-                    <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
-                    <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
-                    <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
-                    <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
-                </select>
-            </div>
+                <!-- Form Input -->
+                <div class="col-md-6 {% if not result %}offset-md-3{% endif %}">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title fs-5 fw-semibold mb-4">
+                                <i class="bi bi-person"></i>
+                                Customer Information
+                              </h4>
+                              
 
-            <div class="input-field flex item-center gap-4">
-                <label for="">TV Subscriber</label>
-                <input type="radio" name="tv_subscriber" id="tv_subscriber_yes" value="1">
-                <label for="tv_subscriber_yes">Yes</label>
-                <input type="radio" name="tv_subscriber" id="tv_subscriber_no" value="0">
-                <label for="tv_subscriber_no">No</label>
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="">Movie Package Subscriber</label>
-                <input type="radio" name="movie_subscriber" id="movie_subscriber_yes" value="1">
-                <label for="movie_subscriber_yes">Yes</label>
-                <input type="radio" name="movie_subscriber" id="movie_subscriber_no" value="0">
-                <label for="movie_subscriber_no">No</label>
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="subscription_age">Subscription Age</label>
-                <input type="text" id="subscription_age" name="subscription_age"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="bill_avg">Bill Average</label>
-                <input type="text" id="bill_avg" name="bill_avg"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="remaining_contract">Remaining Contract</label>
-                <input type="text" id="remaining_contract" name="remaining_contract"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="service_failure_count">Service Failure Count</label>
-                <input type="text" id="service_failure_count" name="service_failure_count"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="download_avg">Download Average</label>
-                <input type="text" id="download_avg" name="download_avg"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="upload_avg">Upload Average</label>
-                <input type="text" id="upload_avg" name="upload_avg"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="download_over_limit">Download Over Limit</label>
-                <input type="text" id="download_over_limit" name="download_over_limit"  class="border border-black">
-            </div>
-            <div class="input-field flex item-center gap-4">
-                <label for="contract">Still on Contract</label>
-                <input type="radio" name="contract" id="contract_yes" value="1">
-                <label for="contract_yes">Yes</label>
-                <input type="radio" name="contract" id="contract_no" value="0">
-                <label for="contract_no">No</label>
-            </div>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
 
-            <input type="submit" name="submit" id="submit" value="Submit" class="border border-black bg-blue-500 text-white px-4 py-2 cursor-pointer">
-        </form>
+                                <div class="mb-3">
+                                    <label for="select_model" class="form-label">Select Model</label>
+                                    <select class="form-select" name="select_model" id="select_model" required>
+                                        <option disabled {% if not selected_model %}selected{% endif %}>-- Select Model --</option>
+                                        <option value="logistic_regression" {% if selected_model == "Logistic Regression" %}selected{% endif %}>Logistic Regression</option>
+                                        <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
+                                        <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
+                                        <option value="adaboost" {% if selected_model == "ADA Boost" %} selected {% endif %}>ADA Boost</option>
+                                        <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
+                                        <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
+                                        <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
+                                        <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
+                                    </select>
+                                </div>
 
-        {% if result %}
-            <div class="mt-4 p-4 border border-black bg-gray-100">
-                <h2 class="text-lg font-bold">Prediction Result using {{ selected_model }}</h2>
-                <p>{{ result }}</p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">TV Subscriber</label>
+                                        <select name="tv_subscriber" class="form-select">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Movie Package Subscriber</label>
+                                        <select name="movie_subscriber" class="form-select">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Subscription Age</label>
+                                        <input type="text" class="form-control" name="subscription_age">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Bill Average</label>
+                                        <input type="text" class="form-control" name="bill_avg">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Remaining Contract</label>
+                                        <input type="text" class="form-control" name="remaining_contract">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Service Failure Count</label>
+                                        <input type="text" class="form-control" name="service_failure_count">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Download Average</label>
+                                        <input type="text" class="form-control" name="download_avg">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Upload Average</label>
+                                        <input type="text" class="form-control" name="upload_avg">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Download Over Limit</label>
+                                        <input type="text" class="form-control" name="download_over_limit">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Still on Contract</label>
+                                        <select name="contract" class="form-select">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Predict Churn</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prediction Result -->
+                {% if result %}
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+
+                            <h5 class="card-title mb-4"><i class="bi bi-graph-up-arrow me-2"></i>Prediction Result</h5>
+                            <div class="text-center mb-3">
+                                <h2 class="text-success fw-bold">{{ result.probability }}%</h2>
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>{{ result.risk_level }}
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6>Summary</h6>
+                                <p class="text-muted">
+                                    This customer has a <strong>{{ result.probability }}%</strong> probability of churning.
+                                    {{ result.summary }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <h6>Recommended Actions</h6>
+                                <ul class="list-unstyled ms-2">
+                                    {% for action in result.recommendations %}
+                                        <li>• {{ action }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
             </div>
-        {% endif %}
+        </div>
     </div>
+</div>
 {% endblock %}
