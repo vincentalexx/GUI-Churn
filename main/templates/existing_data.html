@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Customer Churn Prediction</h1>
+
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="select_model" class="form-label">Select Model</label>
+            <select class="form-select" name="select_model" id="select_model" required>
+                <option disabled {% if not selected_model %}selected{% endif %}>-- Select Model --</option>
+                <option value="logistic_regression" {% if selected_model == "Logistic Regression" %}selected{% endif %}>Logistic Regression</option>
+                <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
+                <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
+                <option value="adaboost" {% if selected_model == "ADA Boost" %} selected {% endif %}>ADA Boost</option>
+                <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
+                <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
+                <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
+                <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="customer_id" class="form-label">Customer ID</label>
+            <input type="text" class="form-control" id="customer_id" name="customer_id" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Predict</button>
+
+        {% if selected_model %}
+            <div class="mt-4">
+                <h5>Prediction Result</h5>
+                <p>Model: {{ selected_model }}</p>
+            </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

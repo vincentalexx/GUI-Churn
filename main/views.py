@@ -21,7 +21,7 @@ svm_scaler = load('./scaler/linear_svm_scaler.pkl')
 nb_scaler = load('./scaler/naive_bayes_scaler.pkl')
 
 # Create your views here.
-def main(request):
+def new_data(request):
     if request.method == 'POST':
         selected_model = request.POST['select_model']
         tv_subscriber = request.POST['tv_subscriber']
@@ -102,7 +102,33 @@ def main(request):
 
         probability = round(probability * 100, 2)
 
-        return render(request, 'main.html', {'result' : result, 'predict': predict, 'selected_model': selected_model, 'probability' : probability})
+        return render(request, 'new_data.html', {'result' : result, 'predict': predict, 'selected_model': selected_model, 'probability' : probability})
 
     else:
-        return render(request, 'main.html')
+        return render(request, 'new_data.html')
+
+def existing_data(request):
+    if request.method == 'POST':
+        selected_model = request.POST['select_model']
+        customer_id = request.POST['customer_id']
+
+        if selected_model == 'logistic_regression':
+            selected_model = 'Logistic Regression'
+        elif selected_model == 'decision_tree':
+            selected_model = 'Decision Tree'
+        elif selected_model == 'random_forest':
+            selected_model = 'Random Forest'
+        elif selected_model == 'adaboost':
+            selected_model = 'AdaBoost'
+        elif selected_model == 'xgboost':
+            selected_model = 'XGBoost'
+        elif selected_model == 'catboost':
+            selected_model = 'CatBoost'
+        elif selected_model == 'linear_svm':
+            selected_model = 'Linear SVM'
+        elif selected_model == 'naive_bayes':
+            selected_model = 'Naive Bayes'
+
+        return render(request, 'existing_data.html', {'selected_model': selected_model, 'customer_id': customer_id})
+    else:
+        return render(request, 'existing_data.html')
