@@ -1,42 +1,133 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h1>Customer Churn Prediction</h1>
+<div class="{% if not result %}d-flex justify-content-center {% endif %}">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="row g-4 gy-md-5 gx-md-3">
+                <div class="text-center">
+                    <h4 class="card-title">Customer Churn Prediction by ID</h4>
+                    <p class="text-muted mb-0">Enter a customer ID to lookup their data and predict churn probability</p>
+                </div>                
 
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+                <!-- Form Input -->
+                <div class="{% if result %}col-md-5{% endif %}">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h4 class="card-title fs-5 fw-semibold mb-4">
+                                <i class="bi bi-search"></i>
+                                Customer Lookup
+                            </h4>
+                              
 
-        <div class="mb-3">
-            <label for="select_model" class="form-label">Select Model</label>
-            <select class="form-select" name="select_model" id="select_model" required>
-                <option disabled {% if not selected_model %}selected{% endif %}>-- Select Model --</option>
-                <option value="logistic_regression" {% if selected_model == "Logistic Regression" %}selected{% endif %}>Logistic Regression</option>
-                <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
-                <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
-                <option value="adaboost" {% if selected_model == "AdaBoost" %} selected {% endif %}>ADA Boost</option>
-                <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
-                <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
-                <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
-                <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
-            </select>
-        </div>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="customer_id" class="form-label">Customer ID</label>
-            <input type="text" class="form-control" id="customer_id" name="customer_id" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Predict</button>
+                                <div class="mb-3">
+                                    <label for="select_model" class="form-label">Select Model</label>
+                                    <select class="form-select" name="select_model" id="select_model" required>
+                                        <option disabled {% if not selected_model %}selected{% endif %}>-- Select Model --</option>
+                                        <option value="logistic_regression" {% if selected_model == "Logistic Regression" %}selected{% endif %}>Logistic Regression</option>
+                                        <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
+                                        <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
+                                        <option value="adaboost" {% if selected_model == "AdaBoost" %} selected {% endif %}>ADA Boost</option>
+                                        <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
+                                        <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
+                                        <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
+                                        <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
+                                    </select>
+                                </div>
 
-        {% if selected_model %}
-            <div class="mt-4">
-                <h5>Prediction Result</h5>
-                <p>Model: {{ selected_model }}</p>
-                <p>Predict: {{ result }}</p>
-                <p>Probability: {{ probability }}</p>
+                                <div class="mb-3">
+                                    <label for="customer_id" class="form-label">Customer ID</label>
+                                    <input type="text" class="form-control" id="customer_id" name="customer_id" placeholder="e.g. CUST001, CUST002..." required>
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Lookup & Predict</button>
+                                </div>
+                            </form>
+
+                            {% if result %}
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prediction Result -->
+                {% if result %}
+                <div class="col-md-7">
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4"><i class="bi bi-person me-2"></i>Customer Details</h5>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-muted col fw-bold"><i class="bi bi-person me-2"></i>Customer ID: <span class="fw-normal">{{ customer_data.id }}</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-tv me-2"></i>TV Subscriber: <span class="fw-bold bg-dark rounded-pill px-2 text-white">{% if customer_data.is_tv_subscriber %}Yes{% else %}No{% endif %}</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-film me-2"></i>Movie Package Subscriber: <span class="fw-bold bg-dark rounded-pill px-2 text-white">{% if customer_data.is_movie_package_subscriber %}Yes{% else %}No{% endif %}</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-calendar me-2"></i>Subscription Age: <span class="fw-normal">{{ customer_data.subscription_age }} months</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-cash me-2"></i>Average Bill: <span class="fw-normal">Rp. {{ customer_data.bill_avg }}</span></p>
+                                </div>
+
+                                <div class="col-6">
+                                    <p class="text-muted col fw-bold"><i class="bi bi-clipboard me-2"></i>Remaining Contract: <span class="fw-normal">{{ customer_data.remaining_contract }} months</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Service Failure Count: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.service_failure_count > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.service_failure_count }} times</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-download me-2"></i>Download Average: <span class="fw-normal">{{ customer_data.download_avg }} GB</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-upload me-2"></i>Upload Average: <span class="fw-normal">{{ customer_data.upload_avg }} GB</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-arrow-up-right-circle me-2"></i>Download Over Limit: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.download_over_limit > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.download_over_limit }} times</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+
+                            <h5 class="card-title mb-4"><i class="bi bi-graph-up-arrow me-2 text-success"></i>Prediction Result</h5>
+                            
+                            {% if predict == 'Churn' %}
+                                <div class="text-center mb-3">
+                                    <h2 class="text-danger fw-bold">{{ probability }}%</h2>
+
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>{{ result }}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div class="text-center mb-3">
+                                    <h2 class="text-success fw-bold">{{ probability }}%</h2>
+                                    <p class="my-0 fw-semibold">Churn Probability</p>
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle me-1"></i>{{ result }}
+                                    </span>
+                                </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <h6>Summary</h6>
+                                <p class="text-muted">
+                                    Model Used: <strong>{{ selected_model }}</strong>
+                                    <br />
+                                    This customer has a <strong>{{ probability }}%</strong> probability of churning.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h6>Recommended Actions</h6>
+                                <ul class="">
+                                    {% for action in actions %}
+                                        <li>{{ action }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
 
             </div>
-        {% endif %}
-    </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
