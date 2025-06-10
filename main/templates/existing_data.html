@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container {% if not result %}d-flex justify-content-center min-vh-100{% endif %}">
+<div class="{% if not result %}d-flex justify-content-center {% endif %}">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="row g-4 g-md-5">
+            <div class="row g-4 gy-md-5 gx-md-3">
                 <div class="text-center">
-                    <h4 class="card-title">Customer Churn Prediction</h4>
-                    <p class="text-muted mb-0">Enter customer id to predict churn probability</p>
+                    <h4 class="card-title">Customer Churn Prediction by ID</h4>
+                    <p class="text-muted mb-0">Enter a customer ID to lookup their data and predict churn probability</p>
                 </div>                
 
                 <!-- Form Input -->
-                <div class="{% if result %}col-md-6{% endif %}">
-                    <div class="card shadow-sm">
+                <div class="{% if result %}col-md-5{% endif %}">
+                    <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h4 class="card-title fs-5 fw-semibold mb-4">
-                                <i class="bi bi-person"></i>
-                                Customer Information
-                              </h4>
+                                <i class="bi bi-search"></i>
+                                Customer Lookup
+                            </h4>
                               
 
                             <form action="" method="POST" enctype="multipart/form-data">
@@ -40,11 +40,11 @@
 
                                 <div class="mb-3">
                                     <label for="customer_id" class="form-label">Customer ID</label>
-                                    <input type="number" class="form-control" id="customer_id" name="customer_id" required>
+                                    <input type="text" class="form-control" id="customer_id" name="customer_id" placeholder="e.g. CUST001, CUST002..." required>
                                 </div>
 
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Predict Churn</button>
+                                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Lookup & Predict</button>
                                 </div>
                             </form>
 
@@ -58,15 +58,38 @@
 
                 <!-- Prediction Result -->
                 {% if result %}
-                <div class="col-md-6">
-                    <div class="card shadow-sm h-100">
+                <div class="col-md-7">
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4"><i class="bi bi-person me-2"></i>Customer Details</h5>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-muted col fw-bold"><i class="bi bi-person me-2"></i>Customer ID: <span class="fw-normal">{{ customer_data.id }}</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-tv me-2"></i>TV Subscriber: <span class="fw-bold bg-dark rounded-pill px-2 text-white">{% if customer_data.is_tv_subscriber %}Yes{% else %}No{% endif %}</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-film me-2"></i>Movie Package Subscriber: <span class="fw-bold bg-dark rounded-pill px-2 text-white">{% if customer_data.is_movie_package_subscriber %}Yes{% else %}No{% endif %}</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-calendar me-2"></i>Subscription Age: <span class="fw-normal">{{ customer_data.subscription_age }} months</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-cash me-2"></i>Average Bill: <span class="fw-normal">Rp. {{ customer_data.bill_avg }}</span></p>
+                                </div>
+
+                                <div class="col-6">
+                                    <p class="text-muted col fw-bold"><i class="bi bi-clipboard me-2"></i>Remaining Contract: <span class="fw-normal">{{ customer_data.remaining_contract }} months</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Service Failure Count: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.service_failure_count > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.service_failure_count }} times</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-download me-2"></i>Download Average: <span class="fw-normal">{{ customer_data.download_avg }} GB</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-upload me-2"></i>Upload Average: <span class="fw-normal">{{ customer_data.upload_avg }} GB</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-arrow-up-right-circle me-2"></i>Download Over Limit: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.download_over_limit > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.download_over_limit }} times</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm">
                         <div class="card-body">
 
-                            <h5 class="card-title mb-4"><i class="bi bi-graph-up-arrow me-2"></i>Prediction Result</h5>
+                            <h5 class="card-title mb-4"><i class="bi bi-graph-up-arrow me-2 text-success"></i>Prediction Result</h5>
                             
                             {% if predict == 'Churn' %}
                                 <div class="text-center mb-3">
                                     <h2 class="text-danger fw-bold">{{ probability }}%</h2>
+
                                     <span class="badge bg-warning text-dark">
                                         <i class="bi bi-exclamation-triangle me-1"></i>{{ result }}
                                     </span>
@@ -74,6 +97,7 @@
                             {% else %}
                                 <div class="text-center mb-3">
                                     <h2 class="text-success fw-bold">{{ probability }}%</h2>
+                                    <p class="my-0 fw-semibold">Churn Probability</p>
                                     <span class="badge bg-success">
                                         <i class="bi bi-check-circle me-1"></i>{{ result }}
                                     </span>
@@ -91,9 +115,9 @@
 
                             <div>
                                 <h6>Recommended Actions</h6>
-                                <ul class="list-unstyled ms-2">
-                                    {% for action in result.recommendations %}
-                                        <li>• {{ action }}</li>
+                                <ul class="">
+                                    {% for action in actions %}
+                                        <li>{{ action }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
