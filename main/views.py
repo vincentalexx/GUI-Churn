@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from joblib import load
 from .models import Customer
 import locale
+import numpy as np
 
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
@@ -77,7 +78,14 @@ def new_data(request):
             input_scaled = scaler.transform(data)
             predict = linear_svm_model.predict(input_scaled)
             selected_model = 'Linear SVM'
-            probability = linear_svm_model.predict_proba(input_scaled)[0][1]
+            decision_scores = linear_svm_model.decision_function(input_scaled)
+            
+            def sigmoid(x):
+                return 1 / (1 + np.exp(-x))
+
+            probabilities = sigmoid(decision_scores)
+            probability = np.vstack([1 - probabilities, probabilities]).T
+            probability = probability[0][1]
 
         elif selected_model == 'naive_bayes':
             predict = naive_bayes_model.predict(data)
@@ -154,7 +162,14 @@ def existing_data(request):
             input_scaled = scaler.transform(data)
             predict = linear_svm_model.predict(input_scaled)
             selected_model = 'Linear SVM'
-            probability = linear_svm_model.predict_proba(input_scaled)[0][1]
+            decision_scores = linear_svm_model.decision_function(input_scaled)
+            
+            def sigmoid(x):
+                return 1 / (1 + np.exp(-x))
+
+            probabilities = sigmoid(decision_scores)
+            probability = np.vstack([1 - probabilities, probabilities]).T
+            probability = probability[0][1]
 
         elif selected_model == 'naive_bayes':
             predict = naive_bayes_model.predict(data)
