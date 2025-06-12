@@ -142,11 +142,11 @@
                                     <p class="text-muted col fw-bold"><i class="bi bi-film me-2"></i>Movie Package Subscriber: <span class="fw-bold bg-dark rounded-pill px-2 text-white">{% if customer_data.is_movie_package_subscriber %}Yes{% else %}No{% endif %}</span></p>
                                     <p class="text-muted col fw-bold"><i class="bi bi-calendar me-2"></i>Subscription Age: <span class="fw-normal">{{ customer_data.subscription_age }} months</span></p>
                                     <p class="text-muted col fw-bold"><i class="bi bi-cash me-2"></i>Average Bill: <span class="fw-normal">Rp. {{ customer_data.bill_avg }}</span></p>
-                                    <p class="text-muted col fw-bold"><i class="bi bi-clipboard me-2"></i>Remaining Contract: <span class="fw-normal">{{ customer_data.remaining_contract }} months</span></p>
                                 </div>
-
+                                
                                 <div class="col-6">
-                                    <p class="text-muted col fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Service Failure Count: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.service_failure_count > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.service_failure_count }} times</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-clipboard me-2"></i>Remaining Contract: <span class="fw-normal">{{ customer_data.remaining_contract }} months</span></p>
+                                    <!-- <p class="text-muted col fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Service Failure Count: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.service_failure_count > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.service_failure_count }} times</span></p> -->
                                     <p class="text-muted col fw-bold"><i class="bi bi-download me-2"></i>Download Average: <span class="fw-normal">{{ customer_data.download_avg }} GB</span></p>
                                     <p class="text-muted col fw-bold"><i class="bi bi-upload me-2"></i>Upload Average: <span class="fw-normal">{{ customer_data.upload_avg }} GB</span></p>
                                     <p class="text-muted col fw-bold"><i class="bi bi-arrow-up-right-circle me-2"></i>Download Over Limit: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.download_over_limit > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.download_over_limit }} times</span></p>
