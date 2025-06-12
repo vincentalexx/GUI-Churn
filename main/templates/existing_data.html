@@ -27,20 +27,20 @@
                                     <label for="select_model" class="form-label">Select Model</label>
                                     <select class="form-select" name="select_model" id="select_model" required>
                                         <option disabled {% if not selected_model %}selected{% endif %}>-- Select Model --</option>
+                                        <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
                                         <option value="logistic_regression" {% if selected_model == "Logistic Regression" %}selected{% endif %}>Logistic Regression</option>
+                                        <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
                                         <option value="decision_tree" {% if selected_model == "Decision Tree" %} selected {% endif %}>Decision Tree</option>
                                         <option value="random_forest" {% if selected_model == "Random Forest" %} selected {% endif %}>Random Forest</option>
                                         <option value="adaboost" {% if selected_model == "AdaBoost" %} selected {% endif %}>ADA Boost</option>
                                         <option value="xgboost" {% if selected_model == "XGBoost" %} selected {% endif %}>XGBoost</option>
                                         <option value="catboost" {% if selected_model == "CatBoost" %} selected {% endif %}>CatBoost</option>
-                                        <option value="linear_svm" {% if selected_model == "Linear SVM" %} selected {% endif %}>Linear SVM</option>
-                                        <option value="naive_bayes" {% if selected_model == "Naive Bayes" %} selected {% endif %}>Naive Bayes</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="customer_id" class="form-label">Customer ID</label>
-                                    <input type="text" class="form-control" id="customer_id" name="customer_id" placeholder="e.g. CUST001, CUST002..." required>
+                                    <input type="text" class="form-control" id="customer_id" name="customer_id" placeholder="e.g. C000001, C000011..." required>
                                 </div>
 
                                 <div class="mt-4">
@@ -72,8 +72,8 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <p class="text-muted col fw-bold"><i class="bi bi-clipboard me-2"></i>Remaining Contract: <span class="fw-normal">{{ customer_data.remaining_contract }} months</span></p>
-                                    <p class="text-muted col fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Service Failure Count: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.service_failure_count > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.service_failure_count }} times</span></p>
+                                    <p class="text-muted col fw-bold"><i class="bi bi-clipboard me-2"></i>Remaining Contract: <span class="fw-normal">{{ customer_data.reamining_contract }} months</span></p>
+                                    <!-- <p class="text-muted col fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Service Failure Count: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.service_failure_count > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.service_failure_count }} times</span></p> -->
                                     <p class="text-muted col fw-bold"><i class="bi bi-download me-2"></i>Download Average: <span class="fw-normal">{{ customer_data.download_avg }} GB</span></p>
                                     <p class="text-muted col fw-bold"><i class="bi bi-upload me-2"></i>Upload Average: <span class="fw-normal">{{ customer_data.upload_avg }} GB</span></p>
                                     <p class="text-muted col fw-bold"><i class="bi bi-arrow-up-right-circle me-2"></i>Download Over Limit: <span class="fw-bold rounded-pill px-2 text-white {% if customer_data.download_over_limit > 2 %} bg-danger {% else %} bg-success {% endif %}">{{ customer_data.download_over_limit }} times</span></p>
